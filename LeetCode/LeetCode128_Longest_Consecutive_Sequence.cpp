@@ -1,5 +1,70 @@
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+using namespace std;
 // Time complexity: O(n)
 // Space complexity: O(n)
+class Solution {
+  vector<int> parent;
+  vector<int> size;
+
+ public:
+  void unionf(int p, int q) {
+    int rootP = find(p);
+    int rootQ = find(q);
+
+    if (rootP == rootQ) return;
+    if (size[rootP] > size[rootQ]) {
+      parent[rootQ] = rootP;
+      size[rootP] += size[rootQ];
+    } else {
+      parent[rootP] = rootQ;
+      size[rootQ] += size[rootP];
+    }
+  }
+  int find(int x) {
+    while (x != parent[x]) {
+      parent[x] = parent[parent[x]];
+      x = parent[x];
+    }
+    return x;
+  }
+  int longestConsecutive(vector<int>& nums) {
+    if (!nums.size()) return 0;
+    // nums[i] -> i
+    unordered_map<int, int> mp;
+    parent.reserve(nums.size());
+    size.reserve(nums.size());
+    // init mp, parent, size
+    for (int i = 0; i < nums.size(); ++i) {
+      // parent[i] = i;
+      parent.push_back(i);
+      // size[i] = 1;
+      size.push_back(1);
+      mp[nums[i]] = i;
+    }
+
+    for (const auto& [num, idx] : mp) {
+      if (mp.count(num + 1)) {
+        unionf(idx, mp[num + 1]);
+      }
+      if (mp.count(num - 1)) {
+        unionf(idx, mp[num - 1]);
+      }
+    }
+    return *max_element(size.begin(), size.end());
+  }
+};
+int main()
+{
+  Solution sol;
+  vector<int> nums = {0, 3, 7, 2, 5, 8, 4, 6, 0, 1};
+  cout << sol.longestConsecutive(nums);
+}
+// Time complexity: O(n)
+// Space complexity: O(n)
+/*
 class Solution {
   class UF {
     int count;
@@ -67,6 +132,7 @@ class Solution {
     return uf.maxUnion();
   }
 };
+*/
 // simple unordered_set approach, same as O(n)
 /*
 class Solution {

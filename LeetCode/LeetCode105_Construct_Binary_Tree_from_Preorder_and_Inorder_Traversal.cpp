@@ -9,6 +9,19 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left),
+ * right(right) {}
+ * };
+ */
 // Time complexity: O(n)
 // Space complexity: 
 //   Overall is O(n), create nodes is O(n), in function stack the best is O(log(n)) and the worst is O(n)
@@ -38,4 +51,34 @@ public:
         
         return root;
     }
+};
+// hash map approach
+// Time complexity: O(n)
+// Space complexity:
+//   Overall is O(n), create nodes is O(n), in function stack the best is
+//   O(log(n)) and the worst is O(n)
+class Solution {
+ public:
+  TreeNode* build(vector<int>& preorder, unordered_map<int, int>& inMap,
+                  int left, int right) {
+    if (left > right) return nullptr;
+
+    auto node = new TreeNode(preorder.back());
+    preorder.pop_back();
+
+    node->left = build(preorder, inMap, left, inMap[node->val] - 1);
+    node->right = build(preorder, inMap, inMap[node->val] + 1, right);
+
+    return node;
+  }
+  TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+    reverse(preorder.begin(), preorder.end());
+    // inorder[i] -> i
+    unordered_map<int, int> inMap;
+    for (int i = 0; i < inorder.size(); ++i) {
+      inMap[inorder[i]] = i;
+    }
+
+    return build(preorder, inMap, 0, preorder.size() - 1);
+  }
 };
