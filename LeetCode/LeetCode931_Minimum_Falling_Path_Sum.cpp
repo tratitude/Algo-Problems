@@ -3,6 +3,34 @@
 #include <algorithm>
 #include <iostream>
 using namespace std;
+// Time complexity: O(N^2)
+// Space complexity: O(1)
+class Solution {
+ public:
+  int minFallingPathSum(vector<vector<int>>& matrix) {
+    int N = matrix.size();
+    if (N == 1) return matrix[0][0];
+
+    for (int i = 0; i < N; ++i) {
+      if (i != 0) {
+        matrix[i][0] += matrix[i - 1][0];
+        matrix[i][N - 1] += matrix[i - 1][N - 2];
+        for (int j = 1; j < N - 1; ++j) {
+          matrix[i][j] += min(matrix[i - 1][j - 1], matrix[i - 1][j]);
+        }
+      }
+
+      if (i != N - 1) {
+        for (int j = 0; j < N - 1; ++j) {
+          matrix[i][j] = min(matrix[i][j], matrix[i][j + 1]);
+        }
+      }
+    }
+    return *min_element(matrix.back().begin(), matrix.back().end());
+  }
+};
+// Time complexity: O(N^2)
+// Space complexity: O(1)
 int minFallingPathSum(vector<vector<int>>& matrix) {
     int matSize = matrix.size();
     for(int r=1; r<matSize; ++r){
