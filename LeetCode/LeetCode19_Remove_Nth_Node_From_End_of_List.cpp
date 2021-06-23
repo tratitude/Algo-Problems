@@ -1,40 +1,31 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
-// stack approach
-// Time complexity: O(N)
-// Space complexity: O(N)
-/*
-class Solution {
-  int N = 0;
-
- public:
-  ListNode* helper(ListNode* head) {
-    if (head == nullptr) return nullptr;
-
-    head->next = helper(head->next);
-
-    if (--N == 0)
-      return head->next;
-    else
-      return head;
-  }
-  ListNode* removeNthFromEnd(ListNode* head, int n) {
-    N = n;
-    return helper(head);
-  }
-};
-*/
 // length approach
 // Time complexity: O(N)
 // Space complexity: O(1)
+// N: length of list
+class Solution {
+ public:
+  ListNode* removeNthFromEnd(ListNode* head, int n) {
+    int len = 0;
+    auto ptr = head;
+    while (ptr != nullptr) {
+      ptr = ptr->next;
+      ++len;
+    }
+    if (len == n) return head->next;
+    ptr = head;
+    for (int i = 0; i < len - n - 1; i++) {
+      ptr = ptr->next;
+    }
+    ptr->next = ptr->next->next;
+
+    return head;
+  }
+};
+
+// length approach
+// Time complexity: O(N)
+// Space complexity: O(1)
+// N: length of list
 class Solution {
  public:
   ListNode* removeNthFromEnd(ListNode* head, int n) {
@@ -52,5 +43,29 @@ class Solution {
     q->next = q->next->next;
 
     return head;
+  }
+};
+
+// stack approach
+// Time complexity: O(N)
+// Space complexity: O(N)
+// N: length of list
+class Solution {
+  int N = 0;
+
+ public:
+  ListNode* helper(ListNode* head) {
+    if (head == nullptr) return nullptr;
+
+    head->next = helper(head->next);
+
+    if (--N == 0)
+      return head->next;
+    else
+      return head;
+  }
+  ListNode* removeNthFromEnd(ListNode* head, int n) {
+    N = n;
+    return helper(head);
   }
 };

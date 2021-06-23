@@ -1,9 +1,49 @@
-#include <vector>
-#include <algorithm>
-#include <iostream>
-using namespace std;
-// Time complexity: O(log(n))
+// Time complexity: O(log(N))
 // Space complexity: O(1)
+// N: size of nums
+class Solution {
+ public:
+  int search(vector<int>& nums, int target) {
+    // binary search in [left, right)
+    int left = 0, right = nums.size(), ans = -1;
+
+    while (left < right) {
+      int mid = left + (right - left) / 2;
+
+      // [left, mid] must be ascending order
+      if (nums[left] < nums[mid]) {
+        if (nums[mid] == target) {
+          ans = mid;
+          break;
+        } else if (nums[mid] > target && target >= nums[left]) {
+          // find in [left, mid)
+          right = mid;
+        } else {
+          // find in [mid+1, right)
+          left = mid + 1;
+        }
+      }
+      // [mid, right] must be acending order
+      else {
+        if (nums[mid] == target) {
+          ans = mid;
+          break;
+        } else if (nums[mid] < target && target <= nums[right - 1]) {
+          // find in [mid+1, right)
+          left = mid + 1;
+        } else {
+          // find in [left, mid)
+          right = mid;
+        }
+      }
+    }
+    return ans;
+  }
+};
+
+// Time complexity: O(log(N))
+// Space complexity: O(1)
+// N: size of nums
 class Solution {
  public:
   int search(vector<int>& nums, int target) {
@@ -48,8 +88,10 @@ class Solution {
   }
 };
 
-/*
 // sample 0 ms submission
+// Time complexity: O(log(N))
+// Space complexity: O(1)
+// N: size of nums
 class Solution {
  public:
   int search(vector<int>& nums, int target) {
@@ -78,13 +120,3 @@ class Solution {
     return -1;
   }
 };
-*/
-int main()
-{
-  Solution sol;
-  vector<int> vec = { 4, 5, 6, 0, 1, 2 , 3};
-  int target = 4;
-  //vector<int> vec = {3, 1};
-  //int target = 1;
-  cout << sol.search(vec, target) << "\n";
-}

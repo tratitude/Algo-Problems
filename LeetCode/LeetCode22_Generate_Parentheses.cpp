@@ -1,5 +1,28 @@
-// Time complexity: O(N!)
-// Space complexity: O(N)
+// Time complexity: O(4^N / sqrt(N))
+// Space complexity: O(4^N / sqrt(N))
+// N: n
+class Solution {
+ public:
+  vector<string> generateParenthesis(int n) {
+    vector<string> ans;
+    if (n == 0) {
+      ans.push_back("");
+    } else {
+      for (int i = 0; i < n; i++) {
+        for (auto& left : generateParenthesis(i)) {
+          for (auto& right : generateParenthesis(n - 1 - i)) {
+            string s = "(" + left + ")" + right;
+            ans.push_back(s);
+          }
+        }
+      }
+    }
+    return ans;
+  }
+};
+
+// Time complexity: O(4^N / sqrt(N))
+// Space complexity: O(4^N / sqrt(N))
 // N: n
 class Solution {
   int L, R;
