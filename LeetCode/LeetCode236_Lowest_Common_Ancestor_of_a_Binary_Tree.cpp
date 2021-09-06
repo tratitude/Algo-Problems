@@ -1,14 +1,51 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
-// Time complexity: O(n)
-// Space complexity: O(n)
+// Time complexity: O(N)
+// Space complexity: O(M)
+// N: number of nodes
+// M: max depth of tree
+class Solution {
+  TreeNode* ans = nullptr;
+  int p_val, q_val;
+
+ public:
+  bool find(TreeNode* root) {
+    if (root == nullptr) {
+      return false;
+    }
+
+    int found = 0;
+    bool ret = false;
+    if (root->val == p_val || root->val == q_val) {
+      ++found;
+    }
+    if (find(root->left)) {
+      ++found;
+    }
+    if (find(root->right)) {
+      ++found;
+    }
+
+    if (found == 2) {
+      ans = root;
+    } else if (found == 1) {
+      ret = true;
+    }
+
+    return ret;
+  }
+  TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+    p_val = p->val;
+    q_val = q->val;
+
+    find(root);
+
+    return ans;
+  }
+};
+
+// Time complexity: O(N)
+// Space complexity: O(M)
+// N: number of nodes
+// M: max depth of tree
 class Solution {
   TreeNode* res = nullptr;
 
