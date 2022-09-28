@@ -21,7 +21,7 @@ class Solution {
 };
 
 // Map
-// Time complexity: O(log(N))
+// Time complexity: O(N*log(N))
 // Space complexity: O(N)
 // N: number of nums
 class Solution {
@@ -43,7 +43,7 @@ class Solution {
 };
 
 // Brute force
-// Time complexity: O(N)
+// Time complexity: O(N^2)
 // Space complexity: O(1)
 // N: number of nums
 class Solution {
