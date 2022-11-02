@@ -1,3 +1,67 @@
+// Union find approach
+// Time complexity: O(N)
+// Space complexity: O(N)
+class Solution {
+    class UF {
+        int N = 0;
+        vector<int> parent, size;
+    public:
+        UF(int n): N(n) {
+            for (int i = 0; i < N; i++) {
+                parent.push_back(i);
+                size.push_back(1);
+            }
+        }
+
+        void myUnion(int x, int y) {
+            int rootX = find(x), rootY = find(y);
+
+            if (rootX == rootY) return;
+
+            if (size[rootX] > size[rootY]) {
+                size[rootX] += size[rootY];
+                parent[rootY] = rootX;
+            } else {
+                size[rootY] += size[rootX];
+                parent[rootX] = rootY;
+            }
+        }
+
+        int find(int x) {
+            while (x != parent[x]) {
+                parent[x] = parent[parent[x]];
+                x = parent[x];
+            }
+            return x;
+        }
+
+        int max() {
+            return N > 0 ? *max_element(size.begin(), size.end()) : 0;
+        }
+    };
+public:
+    int longestConsecutive(vector<int>& nums) {
+        int n = nums.size();
+        UF uf(n);
+        unordered_map<int, int> mp;
+
+        for (int i = 0; i < n; i++) {
+            mp[nums[i]] = i;
+        }
+
+        for (auto num : nums) {
+            if (mp.count(num-1) > 0) {
+                uf.myUnion(mp[num], mp[num-1]);
+            }
+            if (mp.count(num+1) > 0) {
+                uf.myUnion(mp[num], mp[num+1]);
+            }
+        }
+
+        return uf.max();
+    }
+};
+/*
 #include <iostream>
 #include <vector>
 #include <unordered_map>
@@ -62,6 +126,7 @@ int main()
   vector<int> nums = {0, 3, 7, 2, 5, 8, 4, 6, 0, 1};
   cout << sol.longestConsecutive(nums);
 }
+*/
 // Time complexity: O(n)
 // Space complexity: O(n)
 /*

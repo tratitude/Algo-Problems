@@ -1,3 +1,44 @@
+// Time complexity: O(N^2)
+// Space complexity: O(1)
+/*
+1. List all combination: O(N^2)
+babad
+^
+|^|
+ |^|
+   ^
+    ^
+2. DP: O(N^2)
+P(i, j) = true  if substring Si...Sj is Palindromic
+         false  otherwise
+-> P(i, j) = (P(i+1, j-1) and Si+1 == Sj-1)
+
+Base case
+P(i, i) = true
+P(i, i+1) = true  if Si == Si+1
+*/
+class Solution {
+    int palindromeLength(string& s, int centerL, int centerR) {
+        while (centerL >= 0 && centerR < s.size() && s[centerL] == s[centerR]) {
+            centerL--;
+            centerR++;
+        }
+        return centerR - centerL - 1;
+    }
+public:
+    string longestPalindrome(string s) {
+        int begin = 0, end = -1;
+        for (int i = 0; i < s.size(); i++) {
+            int len = max(palindromeLength(s, i, i+1), palindromeLength(s, i, i));
+            // cout << i << " " << len << endl;
+            if (len > end - begin + 1) {
+                begin = i - (len - 1) / 2;
+                end = i + len / 2;
+            }
+        }
+        return string(s.begin() + begin, s.begin() + end + 1);
+    }
+};
 // DP
 // Time complexity: O(N^2)
 // Space complexity: O(N^2)

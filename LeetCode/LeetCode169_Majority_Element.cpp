@@ -27,7 +27,7 @@ class Solution {
   int majorityElement(vector<int>& nums) {
     stack<int> st;
 
-    for (auto num : nums) {
+    for (auto& num : nums) {
       if (st.empty() || st.top() == num) {
         st.push(num);
       } else {
