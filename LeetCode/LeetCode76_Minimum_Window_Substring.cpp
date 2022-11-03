@@ -1,3 +1,57 @@
+// Time complexity: O(N+M)
+// Space complexity: O(1)
+// N: length of s
+// M: length of t
+/*
+1. sliding window, finding the minimum window [a,b)
+- right pointer find the window
+- update the ans that is valid
+- left pointer shrink the window to invalid state
+
+ADOBECODEBANC
+^    ^        <- 1. right pointer find the window
+ ^   ^        <- 2. left pointer shrink the window to invalid state
+ ^        ^   <- 1.
+      ^   ^   <- 2.
+      ^     ^ <- 1.
+          ^ ^ <- 2.
+*/
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        int left = 0, right = 0, minLen = INT_MAX, valid = 0;
+        int dic[256] = {0}, window[256] = {0};
+        pair<int, int> ans;
+
+        // init dic
+        for (auto c : t) {
+            dic[c]++;
+        }
+
+        while (right < s.size()) {
+            char r = s[right];
+            ++right;
+            if (window[r]++ < dic[r]) {
+                valid++;
+            }
+
+            while (valid == t.size()) {
+                // shrink left pointer
+                char l = s[left];
+                ++left;
+                if (--window[l] < dic[l]) {
+                    // update ans
+                    if (right - left < minLen) {
+                        minLen = right - left;
+                        ans = {left - 1, right};
+                    }
+                    valid--;
+                }
+            }
+        }
+        return string(s.begin() + ans.first, s.begin() + ans.second);
+    }
+};
 #include <string>
 #include <unordered_map>
 #include <iostream>
