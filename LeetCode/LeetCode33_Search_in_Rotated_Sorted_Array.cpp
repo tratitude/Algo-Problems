@@ -2,6 +2,51 @@
 // Space complexity: O(1)
 // N: size of nums
 class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        if (target == nums.front())
+            return 0;
+        if (target == nums.back())
+            return nums.size() - 1;
+        if (nums.front() <= nums.back()) {
+            return binarySearch(nums, 0, nums.size(), target);
+        }
+
+        int max = findMax(nums);
+        int ans = -1;
+        if (target > nums.front()) {
+            ans = binarySearch(nums, 0, max + 1, target);
+        } else if (target < nums.back()) {
+            ans = binarySearch(nums, max + 1, nums.size(), target);
+        }
+        return ans;
+    }
+
+    int binarySearch(vector<int>& nums, int begin, int end, int target) {
+        auto ans = lower_bound(nums.begin() + begin, nums.begin() + end, target);
+        if (ans == nums.begin() + end || *ans != target)
+            return -1;
+        return ans - nums.begin();
+    }
+
+    int findMax(vector<int>& nums) {
+        int max = 0, left = 0, right = nums.size();
+        while (left < right) {
+            int mid = left + (right - left)/2;
+            if (nums[mid] < nums[max]) {
+                right = mid;
+            } else {
+                left = mid + 1;
+                max = mid;
+            }
+        }
+        return max;
+    }
+};
+// Time complexity: O(log(N))
+// Space complexity: O(1)
+// N: size of nums
+class Solution {
  public:
   int search(vector<int>& nums, int target) {
     // binary search in [left, right)
