@@ -1,3 +1,25 @@
+// Approach: In-order traversal
+// Time complexity: O(N)
+// Space complexity: O(logN)
+// N: number of tree nodes
+class Solution {
+    using LL = long long;
+    LL lastNode = LLONG_MIN;
+public:
+    bool isValidBST(TreeNode* root) {
+        if (root == nullptr) return true;
+
+        bool left = isValidBST(root->left);
+
+        bool parent = (LL)root->val > lastNode;
+        lastNode = root->val;
+
+        bool right = isValidBST(root->right);
+
+        return left && right && parent;
+    }
+};
+
 #include "./lib/BinaryTree.hpp"
 #include <iostream>
 #include <limits>

@@ -1,3 +1,24 @@
+// Time complexity: O(N)
+// Space complexity: O(logN) for balanced tree, O(N) for unbalanced tree
+class Solution {
+    int ans = -1, cnt = -1;
+public:
+    int kthSmallest(TreeNode* root, int k) {
+        cnt = k;
+        traverse(root);
+        return ans;
+    }
+    void traverse(TreeNode* root) {
+        if (root == nullptr) return;
+
+        traverse(root->left);
+
+        if (--cnt == 0)
+            ans = root->val;
+        
+        traverse(root->right);
+    }
+};
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -10,7 +31,8 @@
  * right(right) {}
  * };
  */
-// Time complexity: O(n), Space complexity: O(n)
+// Time complexity: O(logN + k) for balanced tree, O(N + k) for unbalanced tree
+// Space complexity: O(logN) for balanced tree, O(N) for unbalanced tree
 class Solution {
  public:
   int kthSmallest(TreeNode* root, int k) {
