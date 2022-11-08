@@ -1,15 +1,30 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
+// hash map approach
+// Time complexity: O(n)
+// Space complexity:
+//   Overall is O(n), create nodes is O(n), in function stack the best is
+//   O(log(n)) and the worst is O(n)
+class Solution {
+    int cnt = 0;
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        unordered_map<int, int> inorderIdx;
+        for (int i = 0; i < inorder.size(); i++)
+            inorderIdx[inorder[i]] = i;
 
+        return build(preorder, inorderIdx, 0, inorder.size());
+    }
+    TreeNode* build(vector<int>& preorder, unordered_map<int, int>& inorderIdx, int begin, int end) {
+        if (begin == end) return nullptr;
+        if (begin + 1 == end) return new TreeNode(preorder[cnt++]);
+
+        int value = preorder[cnt++];
+        auto node = new TreeNode(value);
+        node->left = build(preorder, inorderIdx, begin, inorderIdx[value]);
+        node->right = build(preorder, inorderIdx, inorderIdx[value] + 1, end);
+
+        return node;
+    }
+};
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -22,7 +37,7 @@
  * right(right) {}
  * };
  */
-// Time complexity: O(n)
+// Time complexity: O(n^2)
 // Space complexity: 
 //   Overall is O(n), create nodes is O(n), in function stack the best is O(log(n)) and the worst is O(n)
 class Solution {

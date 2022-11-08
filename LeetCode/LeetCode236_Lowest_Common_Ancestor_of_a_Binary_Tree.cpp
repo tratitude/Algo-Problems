@@ -3,6 +3,29 @@
 // N: number of nodes
 // M: max depth of tree
 class Solution {
+    TreeNode* ans = nullptr;
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        isFound(root, p, q);
+        return ans;
+    }
+    bool isFound(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if (root == nullptr) return false;
+
+        bool left = isFound(root->left, p, q);
+        bool right = isFound(root->right, p, q);
+        bool cur = root == p || root == q;
+
+        if (ans == nullptr && ((left && right) || (right && cur) || (left && cur)))
+            ans = root;
+        return cur || left || right;
+    }
+};
+// Time complexity: O(N)
+// Space complexity: O(M)
+// N: number of nodes
+// M: max depth of tree
+class Solution {
   TreeNode* ans = nullptr;
   int p_val, q_val;
 
