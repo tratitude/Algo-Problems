@@ -1,6 +1,45 @@
 // Time complexity: O(1)
 // Space complexity: O(n)
 class LRUCache {
+    int capacity = 0;
+    // key -> it
+    unordered_map<int, list<pair<int, int>>::iterator> mp;
+    // {key, value}
+    list<pair<int, int>> cacheList;
+public:
+    LRUCache(int capacity): capacity(capacity) {
+
+    }
+    
+    int get(int key) {
+        auto it = mp.find(key);
+        if (it == mp.end())
+            return -1;
+        
+        int value = it->second->second;
+        cacheList.erase(it->second);
+        cacheList.push_front({key, value});
+        mp[key] = cacheList.begin();
+        return value;
+    }
+    
+    void put(int key, int value) {
+        auto it = mp.find(key);
+        if (it != mp.end()) {
+            cacheList.erase(it->second);
+        }
+        if (cacheList.size() == capacity) {
+            mp.erase(cacheList.back().first);
+            cacheList.pop_back();
+        }
+        
+        cacheList.push_front({key, value});
+        mp[key] = cacheList.begin();
+    }
+};
+// Time complexity: O(1)
+// Space complexity: O(n)
+class LRUCache {
   using Cache = pair<int, int>;
   using CacheList = list<Cache>;
   // {key, list pointer}
