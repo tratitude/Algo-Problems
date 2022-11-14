@@ -1,3 +1,35 @@
+// Time complexity: O(N+M)
+// Space complexity: O(1)
+// N: node numbers of l1
+// M: node numbers of l2
+class Solution {
+ public:
+  ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+    if (length(l1) < length(l2)) swap(l1, l2);
+    int carray = 0;
+    ListNode *head = l1, *prev = nullptr;
+
+    while (l1) {
+      int sum = carray + l1->val + (l2 != nullptr ? l2->val : 0);
+      l1->val = sum % 10;
+      carray = sum / 10;
+      prev = l1;
+      l1 = l1->next;
+      l2 = l2 != nullptr ? l2->next : l2;
+      if (l2 == nullptr && carray == 0) break;
+    }
+    if (carray > 0) prev->next = new ListNode(carray);
+    return head;
+  }
+  int length(ListNode* head) {
+    int len = 0;
+    while (head) {
+      ++len;
+      head = head->next;
+    }
+    return len;
+  }
+};
 // Time complexity: O(N)
 // Space complexity: O(1)
 // N: max node numbers of l1 and l2
@@ -29,49 +61,3 @@ class Solution {
     return ans;
   }
 };
-
-// Sliding window
-// Time complexity: O(N)
-// Space complexity: O(n)
-// N: max node numbers of l1 and l2
-int lengthOfLongestSubstring(string s) {
-  int l = 0, r = 0, res = 0;
-  unordered_map<char, int> m;
-  while (r < s.size()) {
-    ++m[s[r]];
-    if (m[s[r]] > 1) {
-      while (m[s[r]] > 1) {
-        --m[s[l++]];
-      }
-      res = res > (r - l + 1) ? res : r - l + 1;
-    } else
-      res = res > (r - l + 1) ? res : r - l + 1;
-    ++r;
-  }
-  return res;
-}
-
-// Brute force
-// Time complexity: O(N^2)
-// Space complexity: O(N)
-// N: max node numbers of l1 and l2
-int lengthOfLongestSubstring(string s) {
-  if (s.size() == 1) return 1;
-  int maxLen = 0;
-  for (int i = 0; i < s.size(); ++i) {
-    int len = 1;
-    set<int> alphabet;
-    alphabet.insert(s[i]);
-    for (int j = i + 1; j < s.size(); ++j) {
-      auto it = alphabet.find(s[j]);
-      if (it != alphabet.end()) {
-        maxLen = maxLen > len ? maxLen : len;
-        break;
-      }
-      ++len;
-      maxLen = maxLen > len ? maxLen : len;
-      alphabet.insert(s[j]);
-    }
-  }
-  return maxLen;
-}
