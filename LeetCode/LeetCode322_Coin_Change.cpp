@@ -1,3 +1,34 @@
+// Time complexity: O(k*N), Space complexity: O(N)
+// N: amount, k: coins.size()
+/*
+dp[i] = min(dp[i-coins[0]], dp[i-coins[1]], ... ,dp[i-coins[j]]) + 1
+// base case
+dp[0] = 0
+dp[coins[0]] = dp[coins[1]] = ... = dp[coins[j]] = 1
+else dp[i] = -1
+*/
+class Solution {
+ public:
+  int coinChange(vector<int>& coins, int amount) {
+    vector<int> dp(amount + 1, -1);
+    dp[0] = 0;
+    for (int coin : coins)
+      if (coin <= amount) dp[coin] = 1;
+    bt(coins, amount, dp);
+    return dp[amount] == INT_MAX ? -1 : dp[amount];
+  }
+  int bt(vector<int>& coins, int amount, vector<int>& dp) {
+    if (amount < 0) return INT_MAX;
+    if (dp[amount] >= 0) return dp[amount];
+
+    int minCoins = INT_MAX;
+    for (auto coin : coins) {
+      minCoins = min(minCoins, bt(coins, amount - coin, dp));
+    }
+    dp[amount] = minCoins == INT_MAX ? INT_MAX : minCoins + 1;
+    return dp[amount];
+  }
+};
 #include <vector>
 #include <iostream>
 #include <limits>

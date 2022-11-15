@@ -1,3 +1,36 @@
+// Time complexity: O(N)
+// Space complexity: O(1)
+/*
+// change the direction of list [0, len/2], except fast == nullptr
+// slow stop at len/2, if fast == nullptr -> l1 = prev, l2 = slow
+//                     else               -> l1 = slow, l2 = slow
+while (fast != nullptr && fast->next != nullptr)
+
+// compare l1 and l2
+
+*/
+class Solution {
+ public:
+  bool isPalindrome(ListNode* head) {
+    ListNode *prev = nullptr, *slow = head, *next = nullptr, *fast = head;
+
+    while (fast != nullptr && fast->next != nullptr) {
+      fast = fast->next->next;
+      next = slow->next;
+      slow->next = prev;
+      prev = slow;
+      slow = next;
+    }
+    ListNode* l1 = prev;
+    ListNode* l2 = fast == nullptr ? slow : slow->next;
+    while (l2 != nullptr) {
+      if (l2->val != l1->val) return false;
+      l2 = l2->next;
+      l1 = l1->next;
+    }
+    return true;
+  }
+};
 #include <iostream>
 #include <list>
 
