@@ -1,4 +1,29 @@
+// Knapsack Approach with 1D DP
+// Time complexity: O(N*M)
+// Space complexity: O(M)
+// N: size of nums
+// M: summation of nums / 2
+/*
+dp[i] === whether sum of i can be composed from nums
+dp[i+nums[j]] == true  if dp[i] is true
+*/
+class Solution {
+ public:
+  bool canPartition(vector<int>& nums) {
+    int sum = accumulate(nums.begin(), nums.end(), 0);
+    if (sum % 2) return false;
 
+    vector<bool> dp(sum / 2 + 1, false);
+    dp[0] = true;
+
+    for (int num : nums) {
+      for (int i = dp.size() - 1; i >= 0; i--) {
+        if (dp[i] && i + num < dp.size()) dp[i + num] = true;
+      }
+    }
+    return dp[sum / 2];
+  }
+};
 class Solution {
  public:
   bool canPartition(vector<int>& nums) {
