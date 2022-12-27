@@ -1,3 +1,27 @@
+// Bottom-up DP approach
+// Time complexity: O(N^2)
+// Space complexity: O(N)
+// N: size of nums
+class Solution {
+ public:
+  int lengthOfLIS(vector<int>& nums) {
+    int n = nums.size(), ans = 1;
+    vector<int> dp(n, 1);
+
+    for (int i = n - 2; i >= 0; i--) {
+      ans = max(ans, subLIS(nums, dp, i));
+    }
+    return ans;
+  }
+  int subLIS(vector<int>& nums, vector<int>& dp, int idx) {
+    int maxLen = 0;
+    for (int i = idx + 1; i < dp.size(); i++) {
+      if (nums[i] > nums[idx]) maxLen = max(maxLen, dp[i]);
+    }
+    dp[idx] += maxLen;
+    return dp[idx];
+  }
+};
 #include <vector>
 #include <algorithm>
 #include <iostream>
