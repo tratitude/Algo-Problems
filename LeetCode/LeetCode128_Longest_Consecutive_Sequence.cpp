@@ -1,3 +1,24 @@
+// Approach: find consecutive sequence from smallest element
+// Time complexity: O(N)
+// Space complexity: O(N)
+class Solution {
+ public:
+  int longestConsecutive(vector<int>& nums) {
+    unordered_set<int> st(nums.begin(), nums.end());
+    int ans = 0;
+
+    for (int num : st) {
+      if (st.count(num - 1) > 0) continue;
+
+      int count = 0;
+      while (st.count(num + count) > 0) {
+        ++count;
+      }
+      ans = max(ans, count);
+    }
+    return ans;
+  }
+};
 // Union find approach
 // Time complexity: O(N)
 // Space complexity: O(N)

@@ -15,7 +15,7 @@ public:
             while (window.size() > 0 && nums[window.back()] <= nums[i])
                 window.pop_back();
             window.push_back(i);
-            while (window.size() > 0 && window.front() <= i - k)
+            if (window.size() > 0 && window.front() <= i - k)
                 window.pop_front();
             if (i >= k-1)
                 ans.push_back(nums[window.front()]);
